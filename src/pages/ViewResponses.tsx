@@ -3,9 +3,12 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import ReactWordcloud from "react-wordcloud";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, QrCode, Copy } from "lucide-react";
+import QRCode from "react-qr-code";
+import { useToast } from "@/hooks/use-toast";
 
 interface Response {
   id: string;
@@ -17,6 +20,7 @@ const ViewResponses = () => {
   const { sessionId } = useParams();
   const [responses, setResponses] = useState<Response[]>([]);
   const [sessionTitle, setSessionTitle] = useState("");
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchSessionData = async () => {
@@ -87,6 +91,8 @@ const ViewResponses = () => {
       return acc;
     }, []);
 
+  const responseUrl = `${window.location.origin}/respond/${sessionId}`;
+
   return (
     <div className="min-h-screen p-8 bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -110,6 +116,35 @@ const ViewResponses = () => {
             {responses.length} response{responses.length !== 1 ? "s" : ""}
           </p>
         </div>
+
+        <Card className="p-6">
+          <div className="text-center space-y-4">
+            <div className="flex items-center justify-center gap-2">
+              <QrCode className="w-5 h-5 text-purple-600" />
+              <h2 className="text-xl font-semibold">Share Question</h2>
+            </div>
+            <div className="flex justify-center mb-4">
+              <div className="p-4 bg-white rounded-lg border border-purple-100">
+                <QRCode value={responseUrl} />
+              </div>
+            </div>
+            <div className="flex items-center gap-2 max-w-md mx-auto">
+              <Input value={responseUrl} readOnly className="text-sm" />
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={() => {
+                  navigator.clipboard.writeText(responseUrl);
+                  toast({
+                    description: "Link copied to clipboard!",
+                  });
+                }}
+              >
+                <Copy className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </Card>
 
         {words.length > 0 && (
           <Card className="p-6">
