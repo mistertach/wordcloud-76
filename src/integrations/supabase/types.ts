@@ -100,6 +100,59 @@ export type Database = {
           },
         ]
       }
+      responses: {
+        Row: {
+          created_at: string | null
+          id: string
+          response_text: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          response_text: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          response_text?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "responses_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          question: string
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          question: string
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          question?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
