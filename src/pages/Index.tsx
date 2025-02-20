@@ -18,6 +18,9 @@ const Index = () => {
 
   const createSession = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log("Creating session with:", { title, question });
+    
     try {
       const { data, error } = await supabase
         .from("sessions")
@@ -25,7 +28,12 @@ const Index = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      console.log("Supabase response:", { data, error });
+
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
 
       setSessionId(data.id);
       setShowQR(true);
@@ -33,10 +41,11 @@ const Index = () => {
         title: "Success!",
         description: "Your question session has been created.",
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Full error:", error);
       toast({
         title: "Error",
-        description: "Failed to create session. Please try again.",
+        description: error.message || "Failed to create session. Please try again.",
         variant: "destructive",
       });
     }
