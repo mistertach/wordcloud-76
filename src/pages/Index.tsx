@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import QRCode from "react-qr-code";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { PlusCircle, List } from "lucide-react";
+import { Cloud, PlusCircle, List, Sparkles } from "lucide-react";
 
 const Index = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -70,22 +70,29 @@ const Index = () => {
     : "";
 
   return (
-    <div className="min-h-screen p-8 bg-gradient-to-br from-purple-50 to-indigo-50">
+    <div className="min-h-screen p-8 bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="max-w-2xl mx-auto space-y-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Question Sessions
+        <div className="text-center space-y-6">
+          <div className="flex items-center justify-center gap-3 text-purple-600 mb-2">
+            <Cloud className="w-12 h-12" />
+            <Sparkles className="w-8 h-8" />
+          </div>
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            Cloud Builder
           </h1>
-          <p className="text-gray-600 mb-8">
-            Create and manage your question sessions
+          <p className="text-gray-600 text-lg mb-4">
+            Create interactive question sessions in seconds
+          </p>
+          <p className="text-sm text-gray-500 font-medium">
+            Powered by Rubini Intelligence
           </p>
 
           {!showCreateForm && !showQR && (
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 justify-center mt-8">
               <Button
                 size="lg"
                 onClick={() => setShowCreateForm(true)}
-                className="gap-2"
+                className="gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all duration-300"
               >
                 <PlusCircle className="w-5 h-5" />
                 Create New Session
@@ -108,7 +115,7 @@ const Index = () => {
         </div>
 
         {showCreateForm && !showQR && (
-          <Card className="p-6 shadow-lg">
+          <Card className="p-6 shadow-lg backdrop-blur-sm bg-white/80">
             <form onSubmit={createSession} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="title">Session Title</Label>
@@ -118,6 +125,7 @@ const Index = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., Team Meeting Feedback"
                   required
+                  className="border-purple-100 focus:border-purple-300"
                 />
               </div>
 
@@ -129,11 +137,15 @@ const Index = () => {
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="e.g., What are your expectations for this session?"
                   required
+                  className="border-purple-100 focus:border-purple-300"
                 />
               </div>
 
               <div className="flex gap-4">
-                <Button type="submit" className="flex-1">
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                >
                   Create Session
                 </Button>
                 <Button

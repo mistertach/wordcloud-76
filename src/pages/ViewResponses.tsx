@@ -1,9 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import ReactWordcloud from "react-wordcloud";
 import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft } from "lucide-react";
 
 interface Response {
   id: string;
@@ -86,8 +88,20 @@ const ViewResponses = () => {
     }, []);
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
+    <div className="min-h-screen p-8 bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="max-w-4xl mx-auto space-y-8">
+        <div className="flex items-center justify-between">
+          <Link to="/">
+            <Button variant="outline" className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Button>
+          </Link>
+          <p className="text-sm text-gray-500 font-medium">
+            Powered by Rubini Intelligence
+          </p>
+        </div>
+
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             {sessionTitle}
